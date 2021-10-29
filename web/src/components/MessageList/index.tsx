@@ -1,7 +1,7 @@
 import styles from "./styles.module.scss";
 import React,{ useEffect, useState} from "react";
 import { api } from "../../services/api";
-
+import io from "socket.io-client";
 
 type Message = {
     id:string,
@@ -11,11 +11,33 @@ type Message = {
         avatar_url:string
     }
 }
+
+const messagesQueue:Message[] = [];
+
+const socket = io('http://localhost:3000');
+
+socket.on("new_message", newMessage =>{
+    console.log(newMessage);
+})
+
 function MessageList(){
 
+    useEffect(() =>{
+        const timer = setInterval(() =>{
+            if(messagesQueue.length >0){
+                setMessages([
+                    messagesQueue[0],
+                    messages[0],
+                    messages[1]
+                ].filter(Boolean))
+            }            
+        }, 3000)
+    }, []);
+
+
     const [messages, setMessages] = useState<Message[]>([])
-
-
+    
+    
     useEffect(() =>{
         api.get<Message[]>('messages/last3')
         .then((response) =>{
