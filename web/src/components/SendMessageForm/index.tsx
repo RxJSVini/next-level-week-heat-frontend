@@ -8,9 +8,7 @@ import styles from "./styles.module.scss";
 function SendMessageForm(event: FormEvent){  
     const [message, setMessage] = useState('');
     const { user, signOut } = useContext(AuthContext)
-      
-    
-
+       
     
     async function handleSendMessage(event: FormEvent) {
         event.preventDefault();
@@ -39,14 +37,15 @@ function SendMessageForm(event: FormEvent){
                 </span>
             </header>
 
-            <form className={styles.sendMessageForm} onSubmit={handleSendMessage}>
+            <form className={styles.sendMessageForm} onSubmit={handleSendMessage} >
                 <label htmlFor="message">Mensagem</label>
                 <textarea 
                 name="message"
                 id="message"
                 placeholder="Qual sua expectativa para o evento ?"
-                
+                onChange={event => setMessage(event.target.value)}
                 />
+                
                 <button type="submit">Enviar mensagem</button>
             </form>
 
